@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import { api } from "../convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
 
 interface Message {
   author: string;
@@ -7,13 +9,10 @@ interface Message {
 }
 
 function App() {
-  const messages: Message[] = [
-    {author: 'ser', body: 'Hello, world'},
-  ];
-  const sendMessage = (body: string) =>
-    console.log('Trying to send: ' + body);
-  const [newMessageText, setNewMessageText] =
-    useState('');
+  const messages: Message[] = useQuery(api.messages.list) || [];
+  const sendMessage = useMutation(api.messages.send);
+
+  const [newMessageText, setNewMessageText] = useState('');
 
   return (
     <div className='App'>
@@ -28,7 +27,7 @@ function App() {
       <form onSubmit={(e) => {
         e.preventDefault();
         setNewMessageText('');
-        sendMessage(newMessageText);
+        sendMessage({newMessageText}).then(() => {});
       }}>
         <input
           value={newMessageText}
