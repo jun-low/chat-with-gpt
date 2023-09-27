@@ -10,7 +10,7 @@ function App() {
   const messages: Message[] = [
     {author: 'ser', body: 'Hello, world'},
   ];
-  const sendMessage = body =>
+  const sendMessage = (body: string) =>
     console.log('Trying to send: ' + body);
   const [newMessageText, setNewMessageText] =
     useState('');
