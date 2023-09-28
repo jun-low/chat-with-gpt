@@ -44,26 +44,42 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
 
   return (
     <>
-      <ul>
+      <ul className="divide-y divide-gray-300">
         {messages.map((message) => (
-          <li key={message._id}>
-            <span>{message.name ?? message.author}:</span>
-            <span style={{whiteSpace: 'pre-wrap'}}>
-              {message.error ? '⚠️ ' + message.error : message.body ?? '...'}
-            </span>
-            <span>
-              {new Date(
-                message.updatedAt ?? message._creationTime
-              ).toLocaleTimeString()}
-            </span>
+          <li key={message._id} className="py-2">
+            <div className="flex items-center">
+          <span className="text-blue-500 font-semibold mr-2">
+            {message.name ?? message.author}:
+          </span>
+              <span
+                className={`flex-grow ${
+                  message.error
+                    ? 'text-red-500'
+                    : 'text-gray-800'
+                }`}
+              >
+            {message.error ? '⚠️ ' + message.error : message.body ?? '...'}
+          </span>
+              <span className="text-gray-500 text-sm">
+            {new Date(
+              message.updatedAt ?? message._creationTime
+            ).toLocaleTimeString()}
+          </span>
+            </div>
           </li>
         ))}
-        {messages.length === 0 ? <li>New thread...</li> : null}
+        {messages.length === 0 ? (
+          <li className="text-gray-500">New thread...</li>
+        ) : null}
       </ul>
-      <form onSubmit={handleSendMessage}>
+      <form
+        onSubmit={handleSendMessage}
+        className="my-4 flex space-x-2 items-center"
+      >
         <select
           value={identityName}
           onChange={(e) => setIdentityName(e.target.value)}
+          className="border rounded-md py-2 px-3 bg-gray-100 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
         >
           {identities?.map((name) => (
             <option key={name} value={name}>
@@ -75,8 +91,15 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
           value={newMessageText}
           onChange={(event) => setNewMessageText(event.target.value)}
           placeholder="Write a message…"
+          className="flex-grow border rounded-md py-2 px-3 bg-gray-100 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
         />
-        <input type="submit" value="Send" disabled={!newMessageText}/>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          disabled={!newMessageText}
+        >
+          Send
+        </button>
       </form>
     </>
   );

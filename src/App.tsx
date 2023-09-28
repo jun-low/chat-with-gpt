@@ -21,11 +21,16 @@ export default function App() {
   }, [newThreadId, messages]);
 
   return (
-    <main>
-      <h1>Convex Chat-GPT</h1>
-      <p>Disclaimer: Any identities here are not real. Just robots.</p>
+    <main className="container mx-auto bg-white rounded-lg shadow-lg border p-6 m-10 max-w-2xl">
+      <h1 className="text-gray-600 text-2xl text-center font-semibold mb-4">Convex Chat-GPT</h1>
+      <p className="text-gray-600 mb-4">Disclaimer: Any identities here are not real. Just robots.</p>
       {status === 'CanLoadMore' && (
-        <button onClick={() => loadMore(100)}>Load More</button>
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          onClick={() => loadMore(100)}
+        >
+          Load More
+        </button>
       )}
       {messages
         .reduce<UIMessage[][]>((threads, message) => {
@@ -43,14 +48,17 @@ export default function App() {
           <details
             key={'thread' + index}
             open={!newThreadId && index === threads.length - 1}
+            className="mb-4"
           >
-            <summary>{messages[0]?.body?.substring(0, 100)}...</summary>
-            <Thread messages={messages} threadId={messages[0].threadId}/>
+            <summary className="font-semibold text-blue-500 cursor-pointer">
+              {messages[0]?.body?.substring(0, 100)}...
+            </summary>
+            <Thread messages={messages} threadId={messages[0].threadId} />
           </details>
         ))}
       {newThreadId && (
         <>
-          <Thread messages={[]} threadId={newThreadId}/>
+          <Thread messages={[]} threadId={newThreadId} />
         </>
       )}
       <button
@@ -59,10 +67,11 @@ export default function App() {
           createThread().then(setNewThreadId);
         }}
         disabled={!!newThreadId}
+        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-green active:bg-green-700"
       >
         Start New Thread
       </button>
-      <AddIdentity/>
+      <AddIdentity />
     </main>
   );
 }
