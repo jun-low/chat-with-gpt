@@ -1,44 +1,68 @@
-import { useState } from 'react'
-import './App.css'
-import { api } from "../convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
+import { api } from '../convex/_generated/api';
+import { useMutation, usePaginatedQuery } from 'convex/react';
+import { useEffect, useMemo, useState } from 'react';
+import { AddIdentity } from './components/AddIdentity';
+import { Thread, UIMessage } from './components/Thread';
+import { Id } from '../convex/_generated/dataModel';
 
-interface Message {
-  author: string;
-  body: string;
-}
+export default function App() {
+  const {loadMore, results, status} = usePaginatedQuery(
+    api.messages.list,
+    {},
+    {initialNumItems: 100}
+  );
+  const messages = useMemo(() => results.slice().reverse(), [results]);
 
-function App() {
-  const messages: Message[] = useQuery(api.messages.list) || [];
-  const sendMessage = useMutation(api.messages.send);
-
-  const [newMessageText, setNewMessageText] = useState('');
+  const [newThreadId, setNewThreadId] = useState<Id<'threads'>>();
+  const createThread = useMutation(api.threads.add);
+  useEffect(() => {
+    if (newThreadId && messages.find((m) => newThreadId === m.threadId))
+      setNewThreadId(undefined);
+  }, [newThreadId, messages]);
 
   return (
-    <div className='App'>
-      {messages.map((message, i) => (
-        <p key={i}>
-          <span>{message.author}: </span>
-          <span style={{ whiteSpace: 'pre-wrap' }}>
-            {message.body ?? '...'}
-          </span>
-        </p>
-      ))}
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        setNewMessageText('');
-        sendMessage({newMessageText}).then(() => {});
-      }}>
-        <input
-          value={newMessageText}
-          onChange={e => setNewMessageText(e.target.value)}
-          placeholder='Write a message…'
-        />
-        <input type='submit' value='Send' disabled={!newMessageText} />
-      </form>
-    </div>
+    <main>
+      <h1>Convex Chat-GPT</h1>
+      <p>Disclaimer: Any identities here are not real. Just robots.</p>
+      {status === 'CanLoadMore' && (
+        <button onClick={() => loadMore(100)}>Load More</button>
+      )}
+      {messages
+        .reduce<UIMessage[][]>((threads, message) => {
+          const thread = threads.find(
+            (threadMessages) => threadMessages[0].threadId === message.threadId
+          );
+          if (thread) {
+            thread.push(message);
+          } else {
+            threads.push([message]);
+          }
+          return threads;
+        }, [])
+        .map((messages, index, threads) => (
+          <details
+            key={'thread' + index}
+            open={!newThreadId && index === threads.length - 1}
+          >
+            <summary>{messages[0]?.body?.substring(0, 100)}...</summary>
+            <Thread messages={messages} threadId={messages[0].threadId}/>
+          </details>
+        ))}
+      {newThreadId && (
+        <>
+          <Thread messages={[]} threadId={newThreadId}/>
+        </>
+      )}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          createThread().then(setNewThreadId);
+        }}
+        disabled={!!newThreadId}
+      >
+        Start New Thread
+      </button>
+      <AddIdentity/>
+    </main>
   );
 }
-
-export default App
-

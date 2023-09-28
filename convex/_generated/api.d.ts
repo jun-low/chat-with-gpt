@@ -14,7 +14,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as identity from "../identity";
 import type * as messages from "../messages";
+import type * as openai from "../openai";
+import type * as threads from "../threads";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,7 +28,10 @@ import type * as messages from "../messages";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  identity: typeof identity;
   messages: typeof messages;
+  openai: typeof openai;
+  threads: typeof threads;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
