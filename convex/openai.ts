@@ -117,6 +117,8 @@ export const chat = action({
       const openaiResponse = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: gptMessages,
+        temperature: 0,
+        max_tokens: 1024,
       });
       await ctx.runMutation(internal.messages.update, {
         messageId: botMessageId,
