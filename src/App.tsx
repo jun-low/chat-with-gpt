@@ -21,12 +21,13 @@ export default function App() {
   }, [newThreadId, messages]);
 
   return (
-    <main className="container mx-auto bg-white rounded-lg shadow-lg border p-6 m-10 max-w-2xl">
-      <h1 className="text-gray-600 text-2xl text-center font-semibold mb-4">Chat with GPT</h1>
-      <p className="text-gray-600 mb-4">Disclaimer: Any identities here are not real. Just robots.</p>
+    <main className="container mx-auto bg-white rounded-lg shadow-lg border p-4 md:p-6 max-w-xs sm:max-w-2xl">
+      <h1 className="text-gray-600 text-2xl text-center font-semibold mb-2 md:mb-4">Chat with GPT</h1>
+      <p className="text-gray-600 mb-2 md:mb-4 text-center">Disclaimer: Any identities here are not real. Just
+        robots.</p>
       {status === 'CanLoadMore' && (
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-700 w-full md:w-auto"
           onClick={() => loadMore(100)}
         >
           Load More
@@ -48,7 +49,7 @@ export default function App() {
           <details
             key={'thread' + index}
             open={!newThreadId && index === threads.length - 1}
-            className="mb-4"
+            className="mb-2 md:mb-4"
           >
             <summary className="font-semibold text-blue-500 cursor-pointer">
               {messages[0]?.body?.substring(0, 100)}...
@@ -67,7 +68,7 @@ export default function App() {
           createThread().then(setNewThreadId);
         }}
         disabled={!!newThreadId}
-        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-green active:bg-green-700"
+        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-green active:bg-green-700 w-full md:w-auto"
       >
         Start New Thread
       </button>

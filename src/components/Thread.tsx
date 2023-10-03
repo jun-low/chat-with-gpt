@@ -1,7 +1,7 @@
-import { api } from '../../convex/_generated/api';
-import { useAction, useQuery } from 'convex/react';
-import React, { useEffect, useState } from 'react';
-import { Id } from '../../convex/_generated/dataModel';
+import {api} from '../../convex/_generated/api';
+import {useAction, useQuery} from 'convex/react';
+import React, {useEffect, useState} from 'react';
+import {Id} from '../../convex/_generated/dataModel';
 
 export type UIMessage = {
   name: string;
@@ -43,14 +43,14 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
   }
 
   return (
-    <>
+    <div className="sm:max-w-md mx-auto">
       <ul className="divide-y divide-gray-300">
         {messages.map((message) => (
           <li key={message._id} className="py-2">
-            <div className="flex items-center">
-          <span className="text-blue-500 font-semibold mr-2">
-            {message.name ?? message.author}:
-          </span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center">
+              <span className="text-blue-500 font-semibold sm:mr-2">
+                {message.name ?? message.author}:
+              </span>
               <span
                 className={`flex-grow ${
                   message.error
@@ -58,13 +58,13 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
                     : 'text-gray-800'
                 }`}
               >
-            {message.error ? '⚠️ ' + message.error : message.body ?? '...'}
-          </span>
-              <span className="text-gray-500 text-sm">
-            {new Date(
-              message.updatedAt ?? message._creationTime
-            ).toLocaleTimeString()}
-          </span>
+                {message.error ? '⚠️ ' + message.error : message.body ?? '...'}
+              </span>
+              <span className="text-gray-500 text-sm mt-1 sm:mt-0">
+                {new Date(
+                  message.updatedAt ?? message._creationTime
+                ).toLocaleTimeString()}
+              </span>
             </div>
           </li>
         ))}
@@ -74,7 +74,7 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
       </ul>
       <form
         onSubmit={handleSendMessage}
-        className="my-4 flex space-x-2 items-center"
+        className="my-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 items-start sm:items-center"
       >
         <select
           value={identityName}
@@ -101,6 +101,6 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
           Send
         </button>
       </form>
-    </>
+    </div>
   );
 }
