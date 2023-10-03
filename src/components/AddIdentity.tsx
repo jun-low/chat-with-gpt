@@ -37,13 +37,13 @@ export function AddIdentity() {
           <input
             value={newIdentityName}
             onChange={(event) => setNewIdentityName(event.target.value)}
-            placeholder="Identity Name"
+            placeholder="Identity name"
             className="border rounded-md py-2 px-3 bg-gray-100 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"
           />
           <textarea
             value={newIdentityInstructions}
             onChange={(event) => setNewIdentityInstructions(event.target.value)}
-            placeholder="GPT3.5 Instructions"
+            placeholder="GPT3.5 Instructions (You're a helpful assistance)"
             rows={2}
             cols={40}
             className="border rounded-md py-2 px-3 bg-gray-100 text-gray-700 focus:outline-none focus:ring focus:border-blue-300"

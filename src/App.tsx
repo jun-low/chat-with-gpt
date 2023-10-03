@@ -22,7 +22,7 @@ export default function App() {
 
   return (
     <main className="container mx-auto bg-white rounded-lg shadow-lg border p-6 m-10 max-w-2xl">
-      <h1 className="text-gray-600 text-2xl text-center font-semibold mb-4">Convex Chat-GPT</h1>
+      <h1 className="text-gray-600 text-2xl text-center font-semibold mb-4">Chat with GPT</h1>
       <p className="text-gray-600 mb-4">Disclaimer: Any identities here are not real. Just robots.</p>
       {status === 'CanLoadMore' && (
         <button

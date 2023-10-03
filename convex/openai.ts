@@ -3,7 +3,6 @@ import { internal } from './_generated/api';
 import { action } from './_generated/server';
 import { v } from 'convex/values';
 import OpenAI from 'openai';
-import { Moderation } from 'openai/resources';
 
 if (!process.env.OPENAI_API_KEY) {
   throw new Error(
@@ -33,7 +32,7 @@ export const moderateIdentity = action({
   },
 });
 
-const flaggedCategories = (modResult: Moderation) => {
+const flaggedCategories = (modResult: OpenAI.Moderations.Moderation) => {
   return Object.entries(modResult.categories)
     .filter(([, flagged]) => flagged)
     .map(([category]) => category);

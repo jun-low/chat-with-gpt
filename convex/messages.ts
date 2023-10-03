@@ -33,7 +33,7 @@ export const send = internalMutation({
     identityName: v.string(),
     threadId: v.id('threads'),
   },
-  handler: async (ctx, {body, identityName, threadId}) => {
+  handler: async (ctx, {identityName, threadId}) => {
     const userMessageId = await ctx.db.insert('messages', {
       body: '',
       author: 'user',
