@@ -43,7 +43,7 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
   }
 
   return (
-    <div className="sm:max-w-md mx-auto">
+    <div className="sm:max-w-2xl mx-auto">
       <ul className="divide-y divide-gray-300">
         {messages.map((message) => (
           <li key={message._id} className="py-2">
@@ -95,7 +95,7 @@ export function Thread({threadId, messages}: { threadId: Id<'threads'>; messages
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
+          className="disabled:opacity-50 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
           disabled={!newMessageText}
         >
           Send
